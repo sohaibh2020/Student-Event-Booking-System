@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Events - Student Event Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">🎓 Event Booking</div>
+            <ul class="nav-menu">
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="bookings.html">My Bookings</a></li>
+                <li id="nav-user-menu">
+                    <span id="userName"></span>
+                    <a href="#" id="logoutBtn" onclick="logout(event)">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="events-section">
+        <div class="container">
+            <h2>Available Events</h2>
+            
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <input type="text" id="searchBox" placeholder="Search events by name or category..." class="search-box">
+            </div>
+
+            <!-- Events Grid -->
+            <div id="eventsContainer" class="events-grid">
+                <!-- Events will be loaded here by JavaScript -->
+            </div>
+
+            <!-- No Events Message -->
+            <div id="noEventsMessage" class="no-data-message" style="display: none;">
+                <p>No events found.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Student Event Booking System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'student') {
+                alert('Please login first!');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update navbar with user's name
+            document.getElementById('userName').textContent = 'Welcome, ' + currentUser.fullName;
+
+            // Load and display events
+            loadEvents();
+
+            // Search functionality
+            document.getElementById('searchBox').addEventListener('keyup', function() {
+                loadEvents(this.value);
+            });
+        });
+
+        // Function to load and display events
+        function loadEvents(searchTerm = '') {
+            const eventsContainer = document.getElementById('eventsContainer');
+            const noEventsMessage = document.getElementById('noEventsMessage');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            // Get events from localStorage
+            let events = JSON.parse(localStorage.getItem('events')) || [];
+            
+            // Get current user's bookings
+            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            let userBookings = bookings.filter(b => b.userId === currentUser.id);
+
+            // Filter events based on search term
+            if (searchTerm) {
+                events = events.filter(e => 
+                    e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    e.category.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            // Clear container
+            eventsContainer.innerHTML = '';
+
+            if (events.length === 0) {
+                noEventsMessage.style.display = 'block';
+                return;
+            }
+
+            noEventsMessage.style.display = 'none';
+
+            // Display each event
+            events.forEach(event => {
+                const isBooked = userBookings.some(b => b.eventId === event.id);
+                const spotsRemaining = event.capacity - event.booked;
+                const isEventFull = spotsRemaining === 0;
+
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.innerHTML = `
+                    <div class="event-header">
+                        <h3>${event.name}</h3>
+                        <span class="event-category">${event.category}</span>
+                    </div>
+                    <div class="event-body">
+                        <p><strong>📍 Location:</strong> ${event.location}</p>
+                        <p><strong>📅 Date:</strong> ${event.date}</p>
+                        <p><strong>⏰ Time:</strong> ${event.time}</p>
+                        <p><strong>📝 Description:</strong> ${event.description}</p>
+                        <p><strong>👥 Capacity:</strong> ${event.booked}/${event.capacity} (${spotsRemaining} spots remaining)</p>
+                    </div>
+                    <div class="event-footer">
+                        ${isBooked ? 
+                            '<span class="badge badge-booked">✓ Booked</span>' : 
+                            (isEventFull ? 
+                                '<span class="badge badge-full">Event Full</span>' :
+                                `<button class="btn btn-small" onclick="bookEvent('${event.id}', '${event.name}')">Book Event</button>`
+                            )
+                        }
+                    </div>
+                `;
+                eventsContainer.appendChild(eventCard);
+            });
+        }
+
+        // Function to book an event
+        function bookEvent(eventId, eventName) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+            // Check if user already booked this event
+            if (bookings.some(b => b.userId === currentUser.id && b.eventId === eventId)) {
+                alert('You have already booked this event!');
+                return;
+            }
+
+            // Create booking
+            const newBooking = {
+                id: Date.now().toString(),
+                userId: currentUser.id,
+                eventId: eventId,
+                bookedAt: new Date().toISOString()
+            };
+
+            bookings.push(newBooking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            // Update event booked count
+            let events = JSON.parse(localStorage.getItem('events')) || [];
+            const event = events.find(e => e.id === eventId);
+            if (event) {
+                event.booked += 1;
+                localStorage.setItem('events', JSON.stringify(events));
+            }
+
+            alert(`Successfully booked: ${eventName}`);
+            loadEvents();
+        }
+
+        // Function to logout
+        function logout(event) {
+            event.preventDefault();
+            localStorage.removeItem('currentUser');
+            alert('Logged out successfully!');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
