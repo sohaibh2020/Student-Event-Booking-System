@@ -3,112 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Student Event Booking</title>
+    <title>Login - Event Booking System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">🎓 Event Booking</div>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="register.html">Register</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Login Form -->
-    <section class="form-section">
+    <div class="container">
         <div class="form-container">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <!-- Email Field -->
-                <div class="form-group">
-                    <label for="loginEmail">Email:</label>
-                    <input type="email" id="loginEmail" required placeholder="Enter your email">
-                </div>
+            <!-- Navigation Bar -->
+            <nav class="navbar">
+                <div class="navbar-brand">🎓 Event Booking</div>
+                <ul class="navbar-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li><a href="login.html" class="active">Login</a></li>
+                </ul>
+            </nav>
 
-                <!-- Password Field -->
-                <div class="form-group">
-                    <label for="loginPassword">Password:</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter your password">
-                </div>
+            <!-- Login Form -->
+            <div class="form-box">
+                <h2>Student Login</h2>
+                <form id="login-form" onsubmit="studentLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
 
-                <!-- Error Message Display -->
-                <div id="loginError" class="error-message"></div>
-            </form>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
 
-            <!-- Registration Link -->
-            <p class="form-footer">Don't have an account? <a href="register.html">Register here</a></p>
-
-            <!-- Demo Credentials Info -->
-            <div class="info-box">
-                <h4>Demo Admin Credentials:</h4>
-                <p>Email: <strong>admin@uni.com</strong></p>
-                <p>Password: <strong>admin123</strong></p>
+                <p class="form-footer">Don't have an account? <a href="register.html">Register here</a></p>
             </div>
-        </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 Student Event Booking System. All rights reserved.</p>
-    </footer>
+            <!-- Message Display -->
+            <div id="message" class="message"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
-    <script>
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-
-            // Clear previous error messages
-            errorDiv.textContent = '';
-
-            // Check admin credentials
-            if (email === 'admin@uni.com' && password === 'admin123') {
-                // Create admin session
-                const adminUser = {
-                    id: 'admin',
-                    email: 'admin@uni.com',
-                    fullName: 'Administrator',
-                    role: 'admin'
-                };
-                localStorage.setItem('currentUser', JSON.stringify(adminUser));
-                alert('Admin login successful!');
-                window.location.href = 'admin.html';
-                return;
-            }
-
-            // Get users from localStorage
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-
-            // Find user with matching email and password
-            const user = users.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                // Store current user session
-                localStorage.setItem('currentUser', JSON.stringify({
-                    id: user.id,
-                    email: user.email,
-                    fullName: user.fullName,
-                    studentId: user.studentId,
-                    role: 'student'
-                }));
-                alert('Login successful!');
-                window.location.href = 'events.html';
-            } else {
-                errorDiv.textContent = 'Invalid email or password!';
-            }
-        });
-    </script>
 </body>
 </html>

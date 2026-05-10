@@ -3,533 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Student Event Booking</title>
+    <title>Admin Panel - Event Booking System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">🎓 Event Booking - Admin</div>
-            <ul class="nav-menu">
-                <li><a href="#" onclick="switchTab(event, 'events-tab')" class="active">Manage Events</a></li>
-                <li><a href="#" onclick="switchTab(event, 'bookings-tab')">View Bookings</a></li>
-                <li>
-                    <a href="#" id="logoutBtn" onclick="logout(event)">Logout</a>
-                </li>
-            </ul>
+    <!-- Admin Login Page -->
+    <div id="admin-login" class="container">
+        <div class="form-container">
+            <!-- Navigation Bar -->
+            <nav class="navbar">
+                <div class="navbar-brand">🎓 Event Booking</div>
+                <ul class="navbar-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="admin.html" class="active">Admin</a></li>
+                </ul>
+            </nav>
+
+            <!-- Admin Login Form -->
+            <div class="form-box">
+                <h2>Admin Login</h2>
+                <form id="admin-login-form" onsubmit="adminLogin(event)">
+                    <div class="form-group">
+                        <label for="admin-email">Email:</label>
+                        <input type="email" id="admin-email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin-password">Password:</label>
+                        <input type="password" id="admin-password" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Login as Admin</button>
+                </form>
+            </div>
+
+            <!-- Message Display -->
+            <div id="message" class="message"></div>
         </div>
-    </nav>
+    </div>
 
-    <!-- Main Content -->
-    <section class="admin-section">
-        <div class="container">
-            <!-- Events Management Tab -->
-            <div id="events-tab" class="tab-content active">
-                <h2>Manage Events</h2>
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" style="display:none;">
+        <nav class="navbar">
+            <div class="navbar-brand">🎓 Admin Panel</div>
+            <ul class="navbar-menu">
+                <li><a href="#" onclick="showAdminTab('events')" class="admin-tab-btn active">Manage Events</a></li>
+                <li><a href="#" onclick="showAdminTab('bookings')" class="admin-tab-btn">View Bookings</a></li>
+                <li><a href="#" id="admin-logout-btn" onclick="adminLogout()">Logout</a></li>
+            </ul>
+        </nav>
 
-                <!-- Add Event Form -->
-                <div class="form-card">
-                    <h3>Add New Event</h3>
-                    <form id="addEventForm">
-                        <div class="form-row">
+        <div class="admin-content">
+            <!-- Manage Events Tab -->
+            <div id="events-tab" class="admin-tab" style="display:block;">
+                <h1>Manage Events</h1>
+                
+                <!-- Add New Event Form -->
+                <div class="admin-form-section">
+                    <h2>Add New Event</h2>
+                    <form id="add-event-form" onsubmit="addEvent(event)">
+                        <div class="form-grid">
                             <div class="form-group">
-                                <label for="eventName">Event Name:</label>
-                                <input type="text" id="eventName" required placeholder="Enter event name">
+                                <label for="event-name">Event Name:</label>
+                                <input type="text" id="event-name" required>
                             </div>
-                            <div class="form-group">
-                                <label for="eventCategory">Category:</label>
-                                <input type="text" id="eventCategory" required placeholder="e.g., Workshop, Seminar">
-                            </div>
-                        </div>
 
-                        <div class="form-row">
                             <div class="form-group">
-                                <label for="eventDate">Date:</label>
-                                <input type="date" id="eventDate" required>
+                                <label for="event-date">Date:</label>
+                                <input type="date" id="event-date" required>
                             </div>
-                            <div class="form-group">
-                                <label for="eventTime">Time:</label>
-                                <input type="time" id="eventTime" required>
-                            </div>
-                        </div>
 
-                        <div class="form-row">
                             <div class="form-group">
-                                <label for="eventLocation">Location:</label>
-                                <input type="text" id="eventLocation" required placeholder="Enter event location">
+                                <label for="event-time">Time:</label>
+                                <input type="time" id="event-time" required>
                             </div>
+
                             <div class="form-group">
-                                <label for="eventCapacity">Capacity:</label>
-                                <input type="number" id="eventCapacity" required min="1" placeholder="Max attendees">
+                                <label for="event-location">Location:</label>
+                                <input type="text" id="event-location" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="event-capacity">Capacity:</label>
+                                <input type="number" id="event-capacity" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="event-category">Category:</label>
+                                <input type="text" id="event-category" placeholder="e.g., Workshop, Sports, Social" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="eventDescription">Description:</label>
-                            <textarea id="eventDescription" required placeholder="Enter event description" rows="4"></textarea>
+                            <label for="event-description">Description:</label>
+                            <textarea id="event-description" rows="4" required></textarea>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Add Event</button>
-                        <div id="addEventError" class="error-message"></div>
                     </form>
                 </div>
 
                 <!-- Events List -->
-                <h3>All Events</h3>
-                <div id="eventsListContainer">
-                    <div id="noEventsAdmin" class="no-data-message" style="display: none;">
-                        <p>No events created yet.</p>
+                <div class="admin-list-section">
+                    <h2>All Events</h2>
+                    <div id="admin-events-list" class="admin-events-list">
+                        <!-- Events will be loaded here by JavaScript -->
                     </div>
-                    <table class="events-table" id="eventsAdminTable" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Capacity</th>
-                                <th>Booked</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="eventsAdminTableBody">
-                            <!-- Events will be loaded here by JavaScript -->
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
-            <!-- Bookings View Tab -->
-            <div id="bookings-tab" class="tab-content" style="display: none;">
-                <h2>All Student Bookings</h2>
-
-                <div id="bookingsListContainer">
-                    <div id="noBookingsAdmin" class="no-data-message" style="display: none;">
-                        <p>No bookings found.</p>
-                    </div>
-                    <table class="bookings-table" id="bookingsAdminTable" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Student Email</th>
-                                <th>Event Name</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Booked On</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingsAdminTableBody">
-                            <!-- Bookings will be loaded here by JavaScript -->
-                        </tbody>
-                    </table>
+            <!-- View Bookings Tab -->
+            <div id="bookings-tab" class="admin-tab" style="display:none;">
+                <h1>All Event Bookings</h1>
+                <div id="admin-bookings-list" class="admin-bookings-list">
+                    <!-- Bookings will be loaded here by JavaScript -->
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Edit Event Modal -->
-    <div id="editEventModal" class="modal" style="display: none;">
+    <div id="edit-modal" class="modal" style="display:none;">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <span class="close" onclick="closeEditModal()">&times;</span>
             <h2>Edit Event</h2>
-            <form id="editEventForm">
-                <input type="hidden" id="editEventId">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editEventName">Event Name:</label>
-                        <input type="text" id="editEventName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventCategory">Category:</label>
-                        <input type="text" id="editEventCategory" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editEventDate">Date:</label>
-                        <input type="date" id="editEventDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventTime">Time:</label>
-                        <input type="time" id="editEventTime" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editEventLocation">Location:</label>
-                        <input type="text" id="editEventLocation" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventCapacity">Capacity:</label>
-                        <input type="number" id="editEventCapacity" required min="1">
-                    </div>
+            <form id="edit-event-form" onsubmit="saveEventEdit(event)">
+                <div class="form-group">
+                    <label for="edit-event-name">Event Name:</label>
+                    <input type="text" id="edit-event-name" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="editEventDescription">Description:</label>
-                    <textarea id="editEventDescription" required rows="4"></textarea>
+                    <label for="edit-event-date">Date:</label>
+                    <input type="date" id="edit-event-date" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update Event</button>
-                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <div class="form-group">
+                    <label for="edit-event-time">Time:</label>
+                    <input type="time" id="edit-event-time" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-event-location">Location:</label>
+                    <input type="text" id="edit-event-location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-event-capacity">Capacity:</label>
+                    <input type="number" id="edit-event-capacity" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-event-category">Category:</label>
+                    <input type="text" id="edit-event-category" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-event-description">Description:</label>
+                    <textarea id="edit-event-description" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 Student Event Booking System. All rights reserved.</p>
-    </footer>
-
     <script src="script.js"></script>
-    <script>
-        // Check if user is logged in as admin
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (!currentUser || currentUser.role !== 'admin') {
-                alert('Access denied! Admin login required.');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Initialize localStorage with sample events if empty
-            initializeSampleEvents();
-
-            // Load initial data
-            loadAdminEvents();
-            loadAdminBookings();
-
-            // Handle add event form
-            document.getElementById('addEventForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addNewEvent();
-            });
-
-            // Handle edit event form
-            document.getElementById('editEventForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                updateEvent();
-            });
-        });
-
-        // Function to initialize sample events
-        function initializeSampleEvents() {
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            
-            // Only add sample events if none exist
-            if (events.length === 0) {
-                const sampleEvents = [
-                    {
-                        id: 'event1',
-                        name: 'Career Fair 2026',
-                        category: 'Career',
-                        date: '2026-06-15',
-                        time: '10:00',
-                        location: 'Main Hall',
-                        capacity: 100,
-                        booked: 0,
-                        description: 'Meet with top companies hiring graduates. Network with recruiters and explore job opportunities.'
-                    },
-                    {
-                        id: 'event2',
-                        name: 'Web Development Workshop',
-                        category: 'Workshop',
-                        date: '2026-05-20',
-                        time: '14:00',
-                        location: 'Computer Lab A',
-                        capacity: 40,
-                        booked: 0,
-                        description: 'Learn modern web development with React and Node.js. Hands-on session for beginners and intermediate learners.'
-                    },
-                    {
-                        id: 'event3',
-                        name: 'Guest Lecture: Innovation in Tech',
-                        category: 'Seminar',
-                        date: '2026-05-25',
-                        time: '16:00',
-                        location: 'Auditorium',
-                        capacity: 200,
-                        booked: 0,
-                        description: 'Industry expert speaking about the latest innovations in technology and their impact on careers.'
-                    },
-                    {
-                        id: 'event4',
-                        name: 'Sports Day',
-                        category: 'Sports',
-                        date: '2026-06-01',
-                        time: '09:00',
-                        location: 'Sports Ground',
-                        capacity: 150,
-                        booked: 0,
-                        description: 'Annual sports competition featuring various games and activities. Team participation encouraged!'
-                    },
-                    {
-                        id: 'event5',
-                        name: 'Python for Data Science',
-                        category: 'Workshop',
-                        date: '2026-05-28',
-                        time: '15:00',
-                        location: 'Computer Lab B',
-                        capacity: 50,
-                        booked: 0,
-                        description: 'Introduction to Python programming and data analysis libraries. Perfect for beginners in data science.'
-                    }
-                ];
-
-                localStorage.setItem('events', JSON.stringify(sampleEvents));
-            }
-        }
-
-        // Function to add new event
-        function addNewEvent() {
-            const name = document.getElementById('eventName').value;
-            const category = document.getElementById('eventCategory').value;
-            const date = document.getElementById('eventDate').value;
-            const time = document.getElementById('eventTime').value;
-            const location = document.getElementById('eventLocation').value;
-            const capacity = parseInt(document.getElementById('eventCapacity').value);
-            const description = document.getElementById('eventDescription').value;
-            const errorDiv = document.getElementById('addEventError');
-
-            errorDiv.textContent = '';
-
-            // Validate capacity
-            if (capacity <= 0) {
-                errorDiv.textContent = 'Capacity must be greater than 0!';
-                return;
-            }
-
-            // Get existing events
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-
-            // Create new event
-            const newEvent = {
-                id: 'event_' + Date.now(),
-                name,
-                category,
-                date,
-                time,
-                location,
-                capacity,
-                booked: 0,
-                description
-            };
-
-            events.push(newEvent);
-            localStorage.setItem('events', JSON.stringify(events));
-
-            // Reset form
-            document.getElementById('addEventForm').reset();
-            alert('Event added successfully!');
-            loadAdminEvents();
-        }
-
-        // Function to load admin events
-        function loadAdminEvents() {
-            const tableBody = document.getElementById('eventsAdminTableBody');
-            const table = document.getElementById('eventsAdminTable');
-            const noEventsDiv = document.getElementById('noEventsAdmin');
-
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-
-            tableBody.innerHTML = '';
-
-            if (events.length === 0) {
-                noEventsDiv.style.display = 'block';
-                table.style.display = 'none';
-                return;
-            }
-
-            noEventsDiv.style.display = 'none';
-            table.style.display = 'table';
-
-            events.forEach(event => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${event.name}</td>
-                    <td>${event.category}</td>
-                    <td>${event.date}</td>
-                    <td>${event.time}</td>
-                    <td>${event.location}</td>
-                    <td>${event.capacity}</td>
-                    <td>${event.booked}</td>
-                    <td>
-                        <button class="btn btn-small" onclick="editEvent('${event.id}')">Edit</button>
-                        <button class="btn btn-danger btn-small" onclick="deleteEvent('${event.id}', '${event.name}')">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Function to edit event
-        function editEvent(eventId) {
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            const event = events.find(e => e.id === eventId);
-
-            if (!event) {
-                alert('Event not found!');
-                return;
-            }
-
-            // Populate form with event data
-            document.getElementById('editEventId').value = event.id;
-            document.getElementById('editEventName').value = event.name;
-            document.getElementById('editEventCategory').value = event.category;
-            document.getElementById('editEventDate').value = event.date;
-            document.getElementById('editEventTime').value = event.time;
-            document.getElementById('editEventLocation').value = event.location;
-            document.getElementById('editEventCapacity').value = event.capacity;
-            document.getElementById('editEventDescription').value = event.description;
-
-            // Show modal
-            document.getElementById('editEventModal').style.display = 'block';
-        }
-
-        // Function to update event
-        function updateEvent() {
-            const eventId = document.getElementById('editEventId').value;
-            const name = document.getElementById('editEventName').value;
-            const category = document.getElementById('editEventCategory').value;
-            const date = document.getElementById('editEventDate').value;
-            const time = document.getElementById('editEventTime').value;
-            const location = document.getElementById('editEventLocation').value;
-            const capacity = parseInt(document.getElementById('editEventCapacity').value);
-            const description = document.getElementById('editEventDescription').value;
-
-            // Get events
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            const event = events.find(e => e.id === eventId);
-
-            if (!event) {
-                alert('Event not found!');
-                return;
-            }
-
-            // Update event
-            event.name = name;
-            event.category = category;
-            event.date = date;
-            event.time = time;
-            event.location = location;
-            event.capacity = capacity;
-            event.description = description;
-
-            localStorage.setItem('events', JSON.stringify(events));
-            closeEditModal();
-            alert('Event updated successfully!');
-            loadAdminEvents();
-        }
-
-        // Function to delete event
-        function deleteEvent(eventId, eventName) {
-            if (!confirm(`Are you sure you want to delete "${eventName}"?`)) {
-                return;
-            }
-
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            events = events.filter(e => e.id !== eventId);
-            localStorage.setItem('events', JSON.stringify(events));
-
-            // Also remove all bookings for this event
-            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-            bookings = bookings.filter(b => b.eventId !== eventId);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-
-            alert('Event deleted successfully!');
-            loadAdminEvents();
-        }
-
-        // Function to load admin bookings
-        function loadAdminBookings() {
-            const tableBody = document.getElementById('bookingsAdminTableBody');
-            const table = document.getElementById('bookingsAdminTable');
-            const noBookingsDiv = document.getElementById('noBookingsAdmin');
-
-            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-            let events = JSON.parse(localStorage.getItem('events')) || [];
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-
-            tableBody.innerHTML = '';
-
-            if (bookings.length === 0) {
-                noBookingsDiv.style.display = 'block';
-                table.style.display = 'none';
-                return;
-            }
-
-            noBookingsDiv.style.display = 'none';
-            table.style.display = 'table';
-
-            bookings.forEach(booking => {
-                const event = events.find(e => e.id === booking.eventId);
-                const user = users.find(u => u.id === booking.userId);
-
-                if (!event || !user) return;
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.fullName}</td>
-                    <td>${user.email}</td>
-                    <td>${event.name}</td>
-                    <td>${event.date}</td>
-                    <td>${event.time}</td>
-                    <td>${new Date(booking.bookedAt).toLocaleDateString()}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Function to close edit modal
-        function closeEditModal() {
-            document.getElementById('editEventModal').style.display = 'none';
-        }
-
-        // Function to switch tabs
-        function switchTab(event, tabId) {
-            event.preventDefault();
-            
-            // Hide all tabs
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.style.display = 'none');
-
-            // Show selected tab
-            document.getElementById(tabId).style.display = 'block';
-
-            // Update nav links
-            document.querySelectorAll('.nav-menu a').forEach(link => {
-                link.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Reload data for the tab
-            if (tabId === 'events-tab') {
-                loadAdminEvents();
-            } else if (tabId === 'bookings-tab') {
-                loadAdminBookings();
-            }
-        }
-
-        // Function to logout
-        function logout(event) {
-            event.preventDefault();
-            localStorage.removeItem('currentUser');
-            alert('Logged out successfully!');
-            window.location.href = 'index.html';
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('editEventModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
 </body>
 </html>

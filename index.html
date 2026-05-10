@@ -3,76 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Event Booking System - Home</title>
+    <title>Student Event Booking System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">🎓 Event Booking</div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li id="nav-user-section">
-                    <a href="login.html">Login</a>
-                    <a href="register.html">Register</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Main Landing Page -->
+    <div class="container">
+        <div class="landing-page">
+            <!-- Navigation Bar -->
+            <nav class="navbar">
+                <div class="navbar-brand">🎓 Event Booking</div>
+                <ul class="navbar-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="bookings.html" id="bookings-link" style="display:none;">My Bookings</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="#" id="logout-btn" style="display:none;" onclick="logout()">Logout</a></li>
+                    <li id="user-info" style="display:none;">Logged in as: <span id="user-name"></span></li>
+                </ul>
+            </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Welcome to Student Event Booking System</h1>
-            <p>Discover, register, and manage events easily</p>
-            <div class="hero-buttons">
-                <a href="login.html" class="btn btn-primary">Login</a>
-                <a href="register.html" class="btn btn-secondary">Register</a>
+            <!-- Main Content -->
+            <div class="landing-content">
+                <h1>Welcome to Student Event Booking System</h1>
+                <p>Your gateway to discover and book exciting university events!</p>
+                
+                <div class="landing-buttons">
+                    <a href="register.html" class="btn btn-primary">Register as Student</a>
+                    <a href="login.html" class="btn btn-secondary">Login</a>
+                </div>
+
+                <!-- Features Section -->
+                <div class="features-section">
+                    <h2>Features</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📝</div>
+                            <h3>Easy Registration</h3>
+                            <p>Create your account in just a few steps</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🎪</div>
+                            <h3>Browse Events</h3>
+                            <p>Explore all available events at your university</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">✅</div>
+                            <h3>Book Events</h3>
+                            <p>Secure your spot at your favorite events</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📋</div>
+                            <h3>Manage Bookings</h3>
+                            <p>View and manage all your event bookings</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2>Why Choose Us?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📋</div>
-                    <h3>Easy Registration</h3>
-                    <p>Quick and simple student registration process</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Browse Events</h3>
-                    <p>Discover exciting events happening at your university</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✓</div>
-                    <h3>Book Events</h3>
-                    <p>Reserve your spot at your favorite events</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Manage Bookings</h3>
-                    <p>View and cancel your event bookings anytime</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 Student Event Booking System. All rights reserved.</p>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
-    <script>
-        // Initialize page on load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbar();
-        });
-    </script>
 </body>
 </html>

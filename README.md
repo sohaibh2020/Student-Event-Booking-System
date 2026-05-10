@@ -1,177 +1,192 @@
 # Student Event Booking System
 
-A simple and user-friendly web application for university students to discover, register for, and manage event bookings. Built with HTML, CSS, and JavaScript with browser localStorage as the database.
+A complete web-based event booking system designed for university students. Built with HTML, CSS, and JavaScript using browser localStorage as the database.
 
 ## Features
 
 ### Student Features
-- **User Registration**: Students can create accounts with their details (name, email, student ID, department)
-- **User Login**: Secure login system with email and password validation
-- **Browse Events**: View all available events with details (date, time, location, capacity, description)
-- **Search & Filter**: Search events by name or category
-- **Book Events**: Reserve spots at events with real-time capacity tracking
-- **View Bookings**: See all personal bookings in a table format
-- **Cancel Bookings**: Cancel bookings and free up spots for other students
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **User Registration**: Create a new account with email, password, student ID, and contact details
+- **User Login**: Secure login to access booking features
+- **Browse Events**: View all available events with detailed information
+- **Event Search**: Filter events by name, category, or location
+- **Event Details**: See event information including date, time, location, capacity, and available spaces
+- **Book Events**: Reserve a spot at your favorite events
+- **Manage Bookings**: View your booked events and cancel if needed
+- **Capacity Tracking**: See how many spaces are remaining for each event with visual indicators
 
 ### Admin Features
-- **Admin Dashboard**: Dedicated admin panel for event management
-- **Add Events**: Create new events with all details and capacity information
-- **Edit Events**: Update existing event details
-- **Delete Events**: Remove events and automatically cancel related bookings
-- **View All Bookings**: See comprehensive list of all student bookings
-- **Event Management**: Full control over event creation, modification, and deletion
+- **Admin Login**: Secure access to admin panel with predefined credentials
+- **Add Events**: Create new events with all necessary details
+- **Edit Events**: Modify event information
+- **Delete Events**: Remove events from the system
+- **View All Bookings**: See all student bookings across all events
+- **Event Management Dashboard**: Comprehensive view of all system events
 
 ## Technologies Used
 
-- **HTML5**: Semantic markup and form structure
-- **CSS3**: Responsive design, Flexbox, Grid layout
-- **JavaScript (ES6)**: DOM manipulation, event handling, localStorage API
-- **localStorage**: Browser-based data persistence (no backend required)
+- **HTML5**: Semantic markup and page structure
+- **CSS3**: Modern styling with flexbox and grid layouts
+- **JavaScript (ES6)**: Dynamic functionality and data management
+- **localStorage API**: Client-side data persistence
 
-## Project Structure
+## File Structure
 
 ```
-Student-Event-Booking-System/
-├── index.html          # Landing page with features overview
-├── register.html       # Student registration form
-├── login.html          # Login page for students and admin
-├── events.html         # Browse and book events
-├── bookings.html       # View and cancel personal bookings
-├── admin.html          # Admin dashboard for event management
-├── style.css           # All styling and responsive design
-├── script.js           # Shared utility functions
-└── README.md           # This file
+student-event-booking-system/
+├── index.html           # Landing page with features overview
+├── register.html        # Student registration form
+├── login.html           # Student login form
+├── events.html          # Browse and search events
+├── bookings.html        # View and manage bookings
+├── admin.html           # Admin login and management panel
+├── style.css            # All styling (responsive design)
+├── script.js            # All JavaScript functionality
+└── README.md            # This file
 ```
 
-## How to Run the System
+## How to Run
 
-### Option 1: Local File System
-1. Download all files from the repository
-2. Save them in a folder on your computer
-3. Open `index.html` in your web browser
-4. The application will work immediately (uses browser localStorage)
+1. **Clone or Download** the project files
+2. **Open the project** in a web browser by double-clicking `index.html` or serving it through a local server
+3. **No installation required** - everything runs in the browser!
 
-### Option 2: Web Server
-1. Upload all files to a web server
-2. Navigate to `index.html` in your browser
-3. The application will work with full functionality
+Optional: For development, you can use any local server like:
+```bash
+python -m http.server 8000
+# or
+npx http-server
+```
 
-### Option 3: Live Preview
-- If using VS Code, install the "Live Server" extension
-- Right-click on `index.html` and select "Open with Live Server"
+Then open `http://localhost:8000` in your browser.
 
-## Admin Login Credentials
-
-Use these credentials to access the admin panel:
+## Admin Login Details
 
 - **Email**: `admin@uni.com`
 - **Password**: `admin123`
 
-## Default Sample Events
+## Sample Events
 
 The system comes with 5 pre-loaded sample events:
 
-1. **Career Fair 2026** - Career networking event
-2. **Web Development Workshop** - Hands-on coding workshop
-3. **Guest Lecture: Innovation in Tech** - Industry expert seminar
-4. **Sports Day** - Annual sports competition
-5. **Python for Data Science** - Data science introduction course
+1. **Web Development Workshop**
+   - Date: 2026-05-20 at 10:00
+   - Location: Building A, Room 101
+   - Capacity: 50 students
 
-These events are created automatically on first load and can be edited or deleted by the admin.
+2. **Sports Day**
+   - Date: 2026-05-25 at 14:00
+   - Location: Sports Ground
+   - Capacity: 200 students
 
-## Data Storage
+3. **Career Fair 2026**
+   - Date: 2026-06-01 at 09:00
+   - Location: Convention Center
+   - Capacity: 500 students
 
-All data is stored in the browser's **localStorage**:
+4. **Coding Competition**
+   - Date: 2026-06-10 at 13:00
+   - Location: Computer Lab, Building C
+   - Capacity: 100 students
 
-- **users**: Registered student accounts
-- **events**: Event information
-- **bookings**: Student event bookings
-- **currentUser**: Currently logged-in user session
-- **initialized**: Flag to prevent re-initialization
+5. **Freshers Welcome Party**
+   - Date: 2026-06-05 at 18:00
+   - Location: Student Union Hall
+   - Capacity: 300 students
 
-Data persists even after closing the browser but is limited to ~5MB per domain.
+## Usage Guide
 
-## Key Features Explained
+### For Students
 
-### 1. Registration & Authentication
-- New students register with full details
-- Passwords are validated (minimum 6 characters)
-- Email and Student ID must be unique
-- Admin has pre-set credentials
+1. **Register**: Click "Register as Student" and fill in your details
+2. **Login**: Use your email and password to log in
+3. **Browse Events**: View all available events on the Events page
+4. **Search**: Use the search bar to find specific events
+5. **Book**: Click "Book Event" to reserve your spot
+6. **Manage**: Go to "My Bookings" to view or cancel bookings
 
-### 2. Event Management
-- Events display current booking status
-- Real-time capacity tracking (spots remaining)
-- Events show as "Full" when capacity is reached
-- Search functionality filters by name and category
+### For Admin
 
-### 3. Booking System
-- One booking per student per event
-- Automatic capacity updates
-- Booking history with date stamps
-- One-click cancellation with confirmation
+1. **Login**: Go to Admin section and use the provided credentials
+2. **Add Events**: Fill in the form to create new events
+3. **Edit Events**: Click Edit on any event to modify details
+4. **Delete Events**: Click Delete to remove events
+5. **View Bookings**: Switch to "View Bookings" tab to see all student registrations
 
-### 4. Admin Dashboard
-- Separate tab for event management and bookings view
-- Add/Edit/Delete events with validation
-- View all student bookings with student details
-- Modal dialog for event editing
+## Features Explained
+
+### Capacity Management
+- Each event has a limited capacity
+- The system tracks enrolled students vs. total capacity
+- Visual progress bar shows how full an event is
+- Color indicators: Green (plenty of space), Orange (filling up), Red (almost full)
+- When capacity is full, the "Book Event" button becomes disabled
+
+### Data Persistence
+- All data is stored in browser's localStorage
+- Data persists between sessions
+- Each browser has its own separate database
+
+### Input Validation
+- Email validation for registration and login
+- Password confirmation on registration
+- Duplicate email prevention
+- Required field validation
+- Capacity validation (minimum 1)
 
 ## Browser Compatibility
 
-- Chrome (Latest)
+- Chrome/Edge (Latest)
 - Firefox (Latest)
 - Safari (Latest)
-- Edge (Latest)
-- Mobile browsers (iOS Safari, Chrome Android)
+- Opera (Latest)
 
-## Design Principles
+## Responsive Design
 
-- **Clean & Simple**: Minimalist design suitable for university coursework
-- **Beginner-Friendly**: Easy to understand and navigate
-- **Well-Commented Code**: Every section includes explanatory comments
-- **Responsive**: Adapts to different screen sizes
-- **Accessible**: Semantic HTML and proper form labels
+- Fully responsive layout
+- Works on desktop, tablet, and mobile devices
+- Touch-friendly buttons and inputs
+- Optimized grid layouts for all screen sizes
 
-## Future Enhancements
+## Data Storage
 
-Potential features for future versions:
-- Database integration (Node.js + MongoDB/PostgreSQL)
-- User profile management
-- Event notifications via email
-- Payment gateway for ticketed events
-- Event reviews and ratings
-- Email confirmation for bookings
-- Password reset functionality
-- Event categories and filters
-- Attendance tracking for admin
+The system stores the following in localStorage:
+- `students`: Array of registered student accounts
+- `events`: Array of all events
+- `bookings`: Array of all bookings
+- `currentUser`: Currently logged-in student
+- `currentUserId`: ID of currently logged-in student
+- `currentAdmin`: Admin login status
+- `systemInitialized`: Initialization flag
 
-## Troubleshooting
+## Limitations & Notes
 
-### Issues with Data Not Saving?
-- Check if localStorage is enabled in your browser
-- Clear browser cache and try again
-- Make sure you're not in private/incognito mode
+- Data is stored locally in the browser only
+- Clearing browser cache will delete all data
+- Different browsers maintain separate databases
+- No email verification (sample system)
+- No real payment processing
 
-### Events Not Showing?
-- Refresh the page
-- Check browser console for errors (F12)
-- Clear localStorage and reload
+## Future Enhancement Ideas
 
-### Admin Access Issues?
-- Verify you're using the correct credentials
-- Email: `admin@uni.com` | Password: `admin123`
-- Make sure cookies/localStorage are enabled
+- Backend database integration
+- Email notifications for confirmations
+- Event ratings and reviews
+- Waitlist functionality
+- PDF ticket generation
+- Calendar view for events
+- Dark mode theme
+- Multi-language support
 
 ## License
 
 This project is free to use for educational purposes.
 
-## Author
+## Support
 
-Created as a beginner-friendly Student Event Booking System for university coursework.
+For issues or questions, please review the code comments which explain each section in detail.
 
 ---
 
-**Happy Coding! 🎓**
+**Created**: May 2026
+**Version**: 1.0
+**Status**: Complete and ready for use
